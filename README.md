@@ -64,7 +64,7 @@ You can display methods of ADEWebAPI using "." and tab key
     myade.exception_factory       myade.getDate                 myade.logger                  myade.setProject
     myade.factory                 myade.getEvents               myade.login                   myade.url
 
-Docstring can appears using "?"
+Docstring can be print using "?"
 
     In [8]: ?myade.connect
     Signature: myade.connect()
