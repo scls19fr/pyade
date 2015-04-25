@@ -40,7 +40,9 @@ def hide_string(s, char_replace='*'):
 
 def hide_dict_values(d, hidden_keys=['password'], char_replace='*'):
     """Returns a dictionnary with some hidden values (such as password)
-    when a dict is given"""
+    when a dict is given.
+    Characters are replaced with char_replace - default is '*'
+    Values which need to be hidden are given in a list named hidden_keys"""
     d_hidden = d.copy()
     for key in hidden_keys:
         if key in d_hidden.keys():
@@ -48,7 +50,9 @@ def hide_dict_values(d, hidden_keys=['password'], char_replace='*'):
     return(d_hidden)
 
 def replace_dict_values(d, replace_keys):
-    """Returns a dictionnary with replaced values"""
+    """Returns a dictionnary with replaced values
+    replace_keys is a dictionary
+    replace_keys = {'key': 'value_to_display'}"""
     d_hidden = d.copy()
     for key, replace_value in replace_keys.items():
         if key in d_hidden.keys():
@@ -58,6 +62,8 @@ def replace_dict_values(d, replace_keys):
 ENV_VAR_ROOT = 'ADE_WEB_API'
 
 def get_info(key, default_value=None):
+    """Returns a value (url, login, password)
+    using either default_value or using environment variable"""
     ENV_VAR_KEY = ENV_VAR_ROOT + "_" + key.upper()
     if default_value=='' or default_value is None:
         try:
@@ -70,6 +76,10 @@ def get_info(key, default_value=None):
         return(default_value)
 
 class HiddenDict(dict):
+    """Class to manage keys/values like a dict
+    but that can "hide" some values
+    """
+
     def __init__(self, **kwargs):
         super(HiddenDict, self).__init__()
         for key, value in kwargs.items():
@@ -95,6 +105,8 @@ class HiddenDict(dict):
         return("<Config %s>" % repr(hidden_dict))
 
 class Config(HiddenDict):
+    """Config class
+    password is never displayed but is stored in this class"""
     def __init__(self, **kwargs):
         #super(Config, self).__init__(hidden_keys=['password'], replace_keys={'url': 'server'}, **kwargs)
         super(Config, self).__init__(hidden_keys=['password'], **kwargs)
@@ -110,6 +122,7 @@ class Config(HiddenDict):
         return(d)
 
 def timestamp2datetime(ts, tz=pytz.utc):
+    """Converts Unix timestamp to Python datetime.datetime"""
     return(datetime.datetime.fromtimestamp(float(ts)/1000.0, tz))
 
 class BaseObject(object):
@@ -131,6 +144,8 @@ class BaseObject(object):
         return("%s(%s)" % (self.__class__.__name__, repr(self.__dict__)))
 
 class Project(BaseObject):
+    """Project object
+    uid is automatically convert to datetime"""
     def init(self, **kwargs):
         if 'uid' in kwargs.keys():
             self.__dict__['uid'] = timestamp2datetime(float(self.__dict__['uid']))
@@ -161,11 +176,15 @@ class Caracteristic(BaseObject):
     pass
 
 class Date(BaseObject):
+    """Date object
+    time is automatically convert to datetime"""
     def init(self, **kwargs):
         if 'time' in kwargs.keys():
             self.__dict__['time'] = timestamp2datetime(float(self.__dict__['time']))
 
 class ObjectFactory(object):
+    """A factory (see pattern factory) which can create Resource, Trainee, Room,
+    Instructor, Project, Activity, Event, Cost, Caracteristic, Date object"""
     def create_object(self, typ, **kwargs):
         resource_objects = {
             'resource': Resource,
@@ -182,6 +201,7 @@ class ObjectFactory(object):
         return(resource_objects[typ](**kwargs))
 
 class ADEWebAPI():
+    """Class to manage ADE Web API (reader only)"""
     def __init__(self, url, login, password):
         self.url = url
         self.login = login
@@ -293,6 +313,7 @@ class ADEWebAPI():
             and returned_projectId==str(projectId))
 
     def getResources(self, **kwargs):
+        """Returns resource(s) from several optional arguments"""
         function = 'getResources'
         self._test_opt_params(kwargs, function)
         element = self._send_request(function, **kwargs)
@@ -305,6 +326,7 @@ class ADEWebAPI():
         return(lst_resources)
 
     def getActivities(self, **kwargs):
+        """Returns activity(ies) from several optional arguments"""
         function = 'getActivities'
         self._test_opt_params(kwargs, function)
         typ = 'activity'
@@ -314,6 +336,7 @@ class ADEWebAPI():
         return(lst_activities)
         
     def getEvents(self, **kwargs):
+        """Returns event(s) from several optional arguments"""
         function = 'getEvents'
         self._test_opt_params(kwargs, function)
         typ = 'event'
@@ -323,6 +346,7 @@ class ADEWebAPI():
         return(lst_events)
         
     def getCosts(self, **kwargs):
+        """Returns cost(s) from several optional arguments"""
         function = 'getCosts'
         self._test_opt_params(kwargs, function)
         element = self._send_request(function, **kwargs)
@@ -332,6 +356,7 @@ class ADEWebAPI():
         return(lst)
 
     def getCaracteristics(self, **kwargs):
+        """Returns caracteristic(s) from several optional arguments"""
         function = 'getCaracteristics'
         self._test_opt_params(kwargs, function)
         element = self._send_request(function, **kwargs)
@@ -341,6 +366,7 @@ class ADEWebAPI():
         return(lst)
         
     def getDate(self, week, day, slot):
+        """Returns date object from week, day, slot"""
         function = 'getDate'
         #self._test_opt_params(kwargs, function) # no keyword arguments (kwargs)
         element = self._send_request(function, week=week, day=day, slot=slot)
