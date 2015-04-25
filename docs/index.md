@@ -1,8 +1,8 @@
 
 [![Latest Version](https://pypip.in/version/pyade/badge.svg)](https://pypi.python.org/pypi/pyade/)
-[![Supported Python versions](https://pypip.in/py_versions/<PYPI_PKG_NAME>/badge.svg)](https://pypi.python.org/pypi/pyade/)
+[![Supported Python versions](https://pypip.in/py_versions/pyade/badge.svg)](https://pypi.python.org/pypi/pyade/)
 [![Download format](https://pypip.in/format/pyade/badge.svg)](https://pypi.python.org/pypi/pyade/)
-[![License](https://pypip.in/license/<PYPI_PKG_NAME>/badge.svg)](https://pypi.python.org/pypi/<PYPI_PKG_NAME>/)
+[![License](https://pypip.in/license/pyade/badge.svg)](https://pypi.python.org/pypi/pyade/)
 [![Development Status](https://pypip.in/status/pyade/badge.svg)](https://pypi.python.org/pypi/pyade/)
 [![Downloads](https://pypip.in/download/pyade/badge.svg)](https://pypi.python.org/pypi/pyade/)
 [![Build Status](https://travis-ci.org/scls19fr/pyade.svg)](https://travis-ci.org/scls19fr/pyade)
