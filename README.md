@@ -106,6 +106,7 @@ You can set `myade` instance of class `ADEWebAPI` in order methods output list o
     [Project({'id': '6'}),
      Project({'id': '5'})]
 
+Don't forget to disconnect from server before quitting.
 
     In [11]: myade.disconnect()
     DEBUG:ADEWebAPI:send {'function': 'disconnect', 'sessionId': '14cef8679e2'}
