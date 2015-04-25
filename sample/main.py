@@ -83,13 +83,13 @@ def main(url, login, password):
         print("resources: %s" % resources)
         print("")
 
-        resource = resources[0]['id'] # id of the first resource
+        resource = list(resources)[0]['id'] # id of the first resource
 
         activities = myade.getActivities(resources=resource) # , tree=True
         print("activities: %s" % activities)
         print("")
 
-        activity = activities[0]['id'] # id of the first activity
+        activity = list(activities)[0]['id'] # id of the first activity
 
         events = myade.getEvents(activities=activity)
         print("events: %s" % events)
@@ -118,10 +118,9 @@ def main(url, login, password):
         #content = myade.imageET(resources=6415, weeks=15, days='0,1,2,3,4,5,6', width=700, height=500)
         content = myade.imageET(code=9994, weeks=15, days='0,1,2,3,4,5,6', width=700, height=500)
         filename = os.path.join(basepath, 'image.gif')
-        print("output to filename %s" % filename)
-        with open(filename, 'w') as fd:
+        print("output to filename '%s'" % filename)
+        with open(filename, 'wb') as fd:
             fd.write(content)
-        #ToFix: Exception: java.lang.NullPointerException is raised
 
     except:
         print(traceback.format_exc())

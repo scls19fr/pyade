@@ -32,7 +32,7 @@ import requests
 from xml.etree import ElementTree as ET
 import time
 
-from exception import ExceptionFactory
+from .exception import ExceptionFactory
 
 def hide_string(s, char_replace='*'):
     """Returns a string of same length but with '*'"""
@@ -385,8 +385,12 @@ class ADEWebAPI():
     #def imageET(self, resources, weeks, days, **kwargs):
     def imageET(self, **kwargs):
         """Returns a GIF image (binary)"""
+        function = 'imageET'
+
         if 'function' not in kwargs.keys():
-            kwargs['function'] = 'imageET'
+            kwargs['function'] = function
+
+        #self._test_opt_params(kwargs, function)
 
         if 'sessionId' not in kwargs.keys():
             if self.sessionId is not None:
