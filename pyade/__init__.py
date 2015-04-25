@@ -26,6 +26,7 @@ import logging
 import traceback
 
 import datetime
+import pytz
 
 import requests
 from xml.etree import ElementTree as ET
@@ -58,8 +59,8 @@ def get_config(**default_values):
             d[key] = get_info(key)
     return(d)
 
-def timestamp2datetime(ts):
-    return(datetime.datetime.fromtimestamp(float(ts)/1000.0))
+def timestamp2datetime(ts, tz=pytz.utc):
+    return(datetime.datetime.fromtimestamp(float(ts)/1000.0, tz))
 
 class BaseObject(object):
     """Base object class which can be easily initialize using
