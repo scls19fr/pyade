@@ -30,22 +30,7 @@ import os
 
 import time
 
-from pyade import ADEWebAPI, hide_string
-
-
-ENV_VAR_ROOT = 'ADE_WEB_API'
-
-
-def get_info(key, default_value):
-    ENV_VAR_KEY = ENV_VAR_ROOT + "_" + key.upper()
-    if default_value=='' or default_value is None:
-        try:
-            return(os.environ[ENV_VAR_KEY])
-        except:
-            logging.warning("You should pass %s using --%s or using environment variable %r" % (key, key, ENV_VAR_KEY))
-            return(default_value)
-    else:
-        return(default_value)
+from pyade import ADEWebAPI, hide_string, get_info
 
 @click.command()
 @click.option("--url", default="", help="Server URL")

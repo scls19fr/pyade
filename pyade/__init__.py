@@ -20,6 +20,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>
 """
 
+import os
+
 import logging
 import traceback
 
@@ -31,6 +33,19 @@ from exception import ExceptionFactory
 
 def hide_string(s, char_replace='*'):
     return(char_replace*len(s))
+
+ENV_VAR_ROOT = 'ADE_WEB_API'
+
+def get_info(key, default_value):
+    ENV_VAR_KEY = ENV_VAR_ROOT + "_" + key.upper()
+    if default_value=='' or default_value is None:
+        try:
+            return(os.environ[ENV_VAR_KEY])
+        except:
+            logging.warning("You should pass %s using --%s or using environment variable %r" % (key, key, ENV_VAR_KEY))
+            return(default_value)
+    else:
+        return(default_value)
 
 class BaseObject(object):
     """Base object class which can be easily initialize using
