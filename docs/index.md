@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/scls19fr/pyade.svg)](https://travis-ci.org/scls19fr/pyade)
-[![Documentation Status](https://readthedocs.org/projects/pyade/badge/?version=latest)](https://readthedocs.org/projects/pyade/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/pyade/badge/?version=latest)](http://pyade.readthedocs.org/en/latest/)
 
 # pyade
 
