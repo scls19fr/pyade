@@ -386,6 +386,9 @@ class ADEWebAPI():
     def imageET(self, **kwargs):
         """Returns image
         ToDo"""
+        if 'function' not in kwargs.keys():
+            kwargs['function'] = 'imageET'
+
         if 'sessionId' not in kwargs.keys():
             if self.sessionId is not None:
                 kwargs['sessionId'] = self.sessionId

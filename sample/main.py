@@ -108,19 +108,20 @@ def main(url, login, password):
         caracteristics = myade.getCaracteristics(id=1)
         print("caracteristics: %s" % caracteristics)
         print("")
-        ToFix: no data is returned
+        #ToFix: no data is returned
         """
 
         dates = myade.getDate(week=1, day=1, slot=1)
         print("dates: %s" % dates)
         print("")
 
-        """
         #content = myade.imageET(resources=6415, weeks=15, days='0,1,2,3,4,5,6', width=700, height=500)
         content = myade.imageET(code=9994, weeks=15, days='0,1,2,3,4,5,6', width=700, height=500)
-        print(content)
-        ToFix: Exception: java.lang.NullPointerException is raised
-        """
+        filename = os.path.join(basepath, 'image.gif')
+        print("output to filename %s" % filename)
+        with open(filename, 'w') as fd:
+            fd.write(content)
+        #ToFix: Exception: java.lang.NullPointerException is raised
 
     except:
         print(traceback.format_exc())
