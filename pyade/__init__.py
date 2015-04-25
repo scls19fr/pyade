@@ -261,11 +261,11 @@ class ADEWebAPI():
                     'manager',  'codeX', 'codeY', 'codeZ', 'info', 'detail'])
         }
 
-        self.project_init()
+        self._project_init()
 
         self.create_list_of_objects(False)
 
-    def project_init(self):
+    def _project_init(self):
         self._first_date = None
 
     def create_list_of_objects(self, flag):
@@ -293,6 +293,8 @@ class ADEWebAPI():
         return(element)
 
     def _parse_error(self, element):
+        """Parses XML message and raises an Exception if
+        this XML message is an error on server side""" 
         if element.tag=='error':
             self.exception_factory.raise_from_xml(element)
 
@@ -350,7 +352,7 @@ class ADEWebAPI():
             and returned_projectId==str(projectId)
 
         if result:
-            self.project_init()
+            self._project_init()
 
         return(result)
 
