@@ -240,7 +240,12 @@ class ADEWebAPI():
                 'manager',  'codeX', 'codeY', 'codeZ', 'info', 'detail'])
         }
 
+        self.project_init()
+
         self.create_list_of_objects(False)
+
+    def project_init(self):
+        self._first_date = None
     
     def create_list_of_objects(self, flag):
         if flag:
@@ -317,9 +322,15 @@ class ADEWebAPI():
         function = 'setProject'
         element = self._send_request(function, projectId=projectId)
         returned_projectId = element.attrib["projectId"]        
-        returned_sessionId = element.attrib["sessionId"] 
-        return(returned_sessionId == self.sessionId \
-            and returned_projectId==str(projectId))
+        returned_sessionId = element.attrib["sessionId"]
+
+        result = returned_sessionId == self.sessionId \
+            and returned_projectId==str(projectId)
+
+        if result:
+            self.project_init()
+
+        return(result)
 
     def getResources(self, **kwargs):
         """Returns resource(s) from several optional arguments"""
@@ -407,3 +418,18 @@ class ADEWebAPI():
             self._parse_error(element)
         else: # binary response (gif)
             return(response.content)
+
+    def first_date(self):
+        """Returns first date of current project"""
+        self._first_date = self.getDate(0,0,0)['time'].date()
+        return(self._first_date)
+
+    def week_id(self, date=datetime.date.today()):
+        """Returns week number for a given date"""
+        #week = ((date1-date0)/7).days
+        
+        if self._first_date is None:
+            self._first_date = self.first_date()
+
+        week = int((date-self._first_date).days/7)
+        return(week)
