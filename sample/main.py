@@ -99,7 +99,7 @@ def main(url, login, password):
         costs = myade.getCosts(id=10)
         print("costs: %s" % costs)
         print("")
-        #should raise
+        #It should raise
         #    Exception: com.adesoft.errors.NotFoundException: Cost not found. Id=10
         #on Python side
         """
@@ -115,9 +115,12 @@ def main(url, login, password):
         print("dates: %s" % dates)
         print("")
 
-        content = myade.imageET(resources=6415, width=700, height=500, weeks=15, days='0,1,2,3,4,5')
+        """
+        #content = myade.imageET(resources=6415, weeks=15, days='0,1,2,3,4,5,6', width=700, height=500)
+        content = myade.imageET(code=9994, weeks=15, days='0,1,2,3,4,5,6', width=700, height=500)
         print(content)
-
+        ToFix: Exception: java.lang.NullPointerException is raised
+        """
 
     except:
         print(traceback.format_exc())

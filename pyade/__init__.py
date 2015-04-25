@@ -382,12 +382,22 @@ class ADEWebAPI():
         date = Date(**element.attrib)
         return(date)
 
-    def imageET(self, resources, weeks, days, **kwargs):
+    #def imageET(self, resources, weeks, days, **kwargs):
+    def imageET(self, **kwargs):
         """Returns image
         ToDo"""
         if 'sessionId' not in kwargs.keys():
             if self.sessionId is not None:
-                kwargs['sessionId'] = self.sessionId        
+                kwargs['sessionId'] = self.sessionId
+        self.logger.debug("send %s" % hide_dict_values(kwargs))
         response = requests.get(self.url, params=kwargs)
-        #_parse_error(element)
-        return(response.content)
+        try:
+            element = ET.fromstring(response.text)
+            xml_response = True
+        except:
+            xml_response = False
+
+        if xml_response:
+            self._parse_error(element)
+        else: # binary response (gif)
+            return(response.content)
