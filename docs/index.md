@@ -16,6 +16,16 @@ This is an unofficial development. I am in no way related to this company. Use i
 
 WORK IN PROGRESS
 
+## Dependencies
+
+ * click
+ * requests
+ * pytz
+
+## Install
+
+    $ pip install pyade
+
 ## Usage
 
 ### Command Line Interface script
@@ -180,3 +190,7 @@ Don't forget to disconnect from server before quitting.
     <disconnected sessionId="14cef8679e2"/>
 
     Out[15]: True
+
+## Development
+
+    $ git clone https://github.com/scls19fr/pyade.git
