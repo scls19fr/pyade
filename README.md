@@ -143,9 +143,17 @@ You can set `myade` instance of class `ADEWebAPI` in order methods output list o
     [Project({'id': '6'}),
      Project({'id': '5'})]
 
+Set current project
+
+    In [14]: myade.setProject(5)
+    Out[14]: True
+
+
+...
+
 Don't forget to disconnect from server before quitting.
 
-    In [14]: myade.disconnect()
+    In [15]: myade.disconnect()
     DEBUG:ADEWebAPI:send {'function': 'disconnect', 'sessionId': '14cef8679e2'}
     INFO:requests.packages.urllib3.connectionpool:Starting new HTTPS connection (1): server
     DEBUG:requests.packages.urllib3.connectionpool:"GET /jsp/webapi?function=disconnect&sessionId=14cef8679e2 HTTP/1.1" 200 None
@@ -153,4 +161,4 @@ Don't forget to disconnect from server before quitting.
     DEBUG:ADEWebAPI:<?xml version="1.0" encoding="UTF-8"?>
     <disconnected sessionId="14cef8679e2"/>
 
-    Out[14]: True
+    Out[15]: True

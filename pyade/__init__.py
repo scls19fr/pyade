@@ -231,7 +231,13 @@ class ADEWebAPI():
                 'weeks', 'days', 'date', 'detail']),
             'getCosts': set(['id', 'name']),
             'getCaracteristics': set(['id', 'name']),
-            'getDate': set([])
+            'getDate': set([]),
+            'imageET': set(['displayConfId',
+                'displayConfName', 'width', 'height', 'showLoad','id', \
+                'name', 'type', 'email', 'url', 'size', 'capacity', 'quantity', \
+                'code', 'address1', 'address2', 'zipCode', 'state', 'city', \
+                'country', 'telephone', 'fax', 'timezone', 'jobCategory', \
+                'manager',  'codeX', 'codeY', 'codeZ', 'info', 'detail'])
         }
 
         self.create_list_of_objects(False)
@@ -256,11 +262,14 @@ class ADEWebAPI():
         self.logger.debug(response.text)
         element = ET.fromstring(response.text)
 
+        self._parse_error(element)
+
+        return(element)
+    
+    def _parse_error(self, element):
         if element.tag=='error':
             self.exception_factory.raise_from_xml(element)
 
-        return(element)
-        
     def connect(self):
         """Connect to server"""
         function = 'connect'
@@ -372,3 +381,13 @@ class ADEWebAPI():
         element = self._send_request(function, week=week, day=day, slot=slot)
         date = Date(**element.attrib)
         return(date)
+
+    def imageET(self, resources, weeks, days, **kwargs):
+        """Returns image
+        ToDo"""
+        if 'sessionId' not in kwargs.keys():
+            if self.sessionId is not None:
+                kwargs['sessionId'] = self.sessionId        
+        response = requests.get(self.url, params=kwargs)
+        #_parse_error(element)
+        return(response.content)

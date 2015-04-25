@@ -115,6 +115,9 @@ def main(url, login, password):
         print("dates: %s" % dates)
         print("")
 
+        content = myade.imageET(resources=6415, width=700, height=500, weeks=15, days='0,1,2,3,4,5')
+        print(content)
+
 
     except:
         print(traceback.format_exc())
