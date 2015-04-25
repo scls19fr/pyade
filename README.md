@@ -20,7 +20,7 @@ Than you can run sample using:
 
     $ python sample/main.py
 
-You can also pass url, login, password as optional parameters for command line interface using:
+You can also pass url, login, password as optional parameters of command line interface using:
 
     $ python sample/main.py --url https://server/jsp/webapi --user user_login --password user_password
 
@@ -87,11 +87,36 @@ A list of dict describing projects can be given using:
 
     Out[8]: [{'id': '6'}, {'id': '5'}]
 
+You can also use optional parameters such as `detail`, `myade.getProjects(detail=4)`
+
+    In [9]: myade.getProjects(detail=4)
+    DEBUG:ADEWebAPI:send {'function': 'getProjects', 'sessionId': '14cef8679e2', 'detail': 4}
+    INFO:requests.packages.urllib3.connectionpool:Starting new HTTPS connection (1): server
+    DEBUG:requests.packages.urllib3.connectionpool:"GET /jsp/webapi?function=getProjects&sessionId=14cef8679e2&detail=4 HTTP/1.1" 200 None
+    DEBUG:ADEWebAPI:<Response [200]>
+    DEBUG:ADEWebAPI:<?xml version="1.0" encoding="UTF-8"?>
+    <projects>
+        <project id="6" name="2015-2016" uid="1428406688761" version="600" loaded="true"/>
+        <project id="5" name="2014-2015" uid="1364884711514" version="520" loaded="true"/>
+    </projects>
+
+    Out[9]:
+    [{'id': '6',
+      'loaded': 'true',
+      'name': '2015-2016',
+      'uid': '1428406688761',
+      'version': '600'},
+     {'id': '5',
+      'loaded': 'true',
+      'name': '2014-2015',
+      'uid': '1364884711514',
+      'version': '520'}]
+
 You can set `myade` instance of class `ADEWebAPI` in order methods output list of objects instead of list of dictionaries
 
-    In [9]: myade.create_list_of_objects(True)
+    In [10]: myade.create_list_of_objects(True)
 
-    In [10]: myade.getProjects()
+    In [11]: myade.getProjects()
     DEBUG:ADEWebAPI:send {'function': 'getProjects', 'sessionId': '14cef8679e2'}
     INFO:requests.packages.urllib3.connectionpool:Starting new HTTPS connection (1): server
     DEBUG:requests.packages.urllib3.connectionpool:"GET /jsp/webapi?function=getProjects&sessionId=14cef8679e2 HTTP/1.1" 200 None
@@ -102,13 +127,13 @@ You can set `myade` instance of class `ADEWebAPI` in order methods output list o
         <project id="5"/>
     </projects>
 
-    Out[10]:
+    Out[11]:
     [Project({'id': '6'}),
      Project({'id': '5'})]
 
 Don't forget to disconnect from server before quitting.
 
-    In [11]: myade.disconnect()
+    In [12]: myade.disconnect()
     DEBUG:ADEWebAPI:send {'function': 'disconnect', 'sessionId': '14cef8679e2'}
     INFO:requests.packages.urllib3.connectionpool:Starting new HTTPS connection (1): server
     DEBUG:requests.packages.urllib3.connectionpool:"GET /jsp/webapi?function=disconnect&sessionId=14cef8679e2 HTTP/1.1" 200 None
@@ -116,4 +141,4 @@ Don't forget to disconnect from server before quitting.
     DEBUG:ADEWebAPI:<?xml version="1.0" encoding="UTF-8"?>
     <disconnected sessionId="14cef8679e2"/>
 
-    Out[11]: True
+    Out[12]: True
