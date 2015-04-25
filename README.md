@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/scls19fr/pyade.svg)](https://travis-ci.org/scls19fr/pyade)
+
 # pyade
 
 A minimal Python class to use ADE Web API for ADE Planning from [Adesoft](http://www.adesoft.com/).
