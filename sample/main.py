@@ -30,7 +30,7 @@ import os
 
 import time
 
-from pyade import ADEWebAPI, hide_string, get_config
+from pyade import ADEWebAPI, Config
 
 @click.command()
 @click.option("--url", default="", help="Server URL")
@@ -40,16 +40,9 @@ def main(url, login, password):
     logger = logging.getLogger('ADEWebAPI')
     #logger = logging.getLogger()
 
-    config = get_config(url=url, login=login, password=password)
-    #url = get_info('url', url)
-    #login = get_info('login', login)
-    #password = get_info('password', password)
-
-    #url, login, password = get_info('url'), get_info('login'), get_info('password')
-
-    #logger.debug("%s %s %s" % (url, login, hide_string(password)))
-    #print("%s %s %s" % (url, login, hide_string(password)))
-    print("%s %s %s" % (config['url'], config['login'], hide_string(config['password'])))
+    config = Config.create(url=url, login=login, password=password)
+    #config = Config.create()
+    print(config)
 
     #myade = ADEWebAPI(url, login, password)
     myade = ADEWebAPI(**config)

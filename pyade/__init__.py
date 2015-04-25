@@ -35,7 +35,25 @@ import time
 from exception import ExceptionFactory
 
 def hide_string(s, char_replace='*'):
+    """Returns a string of same length but with '*'"""
     return(char_replace*len(s))
+
+def hide_dict_values(d, hidden_keys=['password'], char_replace='*'):
+    """Returns a dictionnary with some hidden values (such as password)
+    when a dict is given"""
+    d_hidden = d.copy()
+    for key in hidden_keys:
+        if key in d_hidden.keys():
+            d_hidden[key] = hide_string(d_hidden[key], char_replace)
+    return(d_hidden)
+
+def replace_dict_values(d, replace_keys):
+    """Returns a dictionnary with replaced values"""
+    d_hidden = d.copy()
+    for key, replace_value in replace_keys.items():
+        if key in d_hidden.keys():
+            d_hidden[key] = replace_value
+    return(d_hidden)
 
 ENV_VAR_ROOT = 'ADE_WEB_API'
 
@@ -43,6 +61,7 @@ def get_info(key, default_value=None):
     ENV_VAR_KEY = ENV_VAR_ROOT + "_" + key.upper()
     if default_value=='' or default_value is None:
         try:
+            import os
             return(os.environ[ENV_VAR_KEY])
         except:
             logging.warning("You should pass %s using --%s or using environment variable %r" % (key, key, ENV_VAR_KEY))
@@ -50,14 +69,45 @@ def get_info(key, default_value=None):
     else:
         return(default_value)
 
-def get_config(**default_values):
-    d = {}
-    for key in ['url', 'login', 'password']:
-        if key in default_values.keys():
-            d[key] = get_info(key, default_values[key])
+class HiddenDict(dict):
+    def __init__(self, **kwargs):
+        super(HiddenDict, self).__init__()
+        for key, value in kwargs.items():
+            if key not in ['hidden_keys', 'replace_keys']:
+                self[key] = value
+
+        if 'hidden_keys' in kwargs.keys():
+            self.hidden_keys = kwargs['hidden_keys']
         else:
-            d[key] = get_info(key)
-    return(d)
+            self.hidden_keys = None
+
+        if 'replace_keys' in kwargs.keys():
+            self.replace_keys = kwargs['replace_keys']
+        else:
+            self.replace_keys = None
+
+    def __repr__(self):
+        hidden_dict = self
+        if self.hidden_keys is not None:
+            hidden_dict = hide_dict_values(hidden_dict)
+        if self.replace_keys is not None:
+            hidden_dict = replace_dict_values(hidden_dict, self.replace_keys)
+        return("<Config %s>" % repr(hidden_dict))
+
+class Config(HiddenDict):
+    def __init__(self, **kwargs):
+        #super(Config, self).__init__(hidden_keys=['password'], replace_keys={'url': 'server'}, **kwargs)
+        super(Config, self).__init__(hidden_keys=['password'], **kwargs)
+
+    @staticmethod
+    def create(**default_values):
+        d = Config()
+        for key in ['url', 'login', 'password']:
+            if key in default_values.keys():
+                d[key] = get_info(key, default_values[key])
+            else:
+                d[key] = get_info(key)
+        return(d)
 
 def timestamp2datetime(ts, tz=pytz.utc):
     return(datetime.datetime.fromtimestamp(float(ts)/1000.0, tz))
@@ -172,15 +222,6 @@ class ADEWebAPI():
         else:
             self._create_list_of = self._create_list_of_dicts
 
-    def hide_dict_values(self, d, hidden_keys=['password']):
-        """Returns a dictionnary with some hidden values (such as password)
-        when a dict is given"""
-        d_hidden = d.copy()
-        for key in hidden_keys:
-            if key in d_hidden.keys():
-                d_hidden[key] = hide_string(d_hidden[key])
-        return(d_hidden)
-
     def _send_request(self, func, **params):
         """Send a request"""
         params['function'] = func
@@ -189,7 +230,7 @@ class ADEWebAPI():
             if self.sessionId is not None:
                 params['sessionId'] = self.sessionId
         
-        self.logger.debug("send %s" % self.hide_dict_values(params))
+        self.logger.debug("send %s" % hide_dict_values(params))
         response = requests.get(self.url, params=params)
         self.logger.debug(response)
         self.logger.debug(response.text)
