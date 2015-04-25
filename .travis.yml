@@ -12,3 +12,7 @@ install:
 
 # command to run tests
 script: nosetests
+
+addons:
+  apt_packages:
+    - pandoc
