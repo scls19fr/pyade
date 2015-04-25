@@ -6,6 +6,7 @@
 [![Development Status](https://pypip.in/status/pyade/badge.svg)](https://pypi.python.org/pypi/pyade/)
 [![Downloads](https://pypip.in/download/pyade/badge.svg)](https://pypi.python.org/pypi/pyade/)
 [![Build Status](https://travis-ci.org/scls19fr/pyade.svg)](https://travis-ci.org/scls19fr/pyade)
+[![Code Health](https://landscape.io/github/scls19fr/pyade/master/landscape.svg?style=flat)](https://landscape.io/github/scls19fr/pyade/master)
 [![Documentation Status](https://readthedocs.org/projects/pyade/badge/?version=latest)](http://pyade.readthedocs.org/en/latest/)
 
 # pyade
