@@ -18,9 +18,9 @@ WORK IN PROGRESS
 
 ## Dependencies
 
- * click
- * requests
- * pytz
+ * `click` Command Line Interface Creation Kit http://click.pocoo.org/ 
+ * `requests` Requests: HTTP for Humans http://www.python-requests.org/
+ * `pytz` World Timezone Definitions for Python http://pytz.sourceforge.net/
 
 ## Install
 
