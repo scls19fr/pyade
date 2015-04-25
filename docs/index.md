@@ -37,11 +37,18 @@ You can use interactively this class
 
     In [1]: from pyade import ADEWebAPI, Config
 
-    In [2]: import logging
+Import logging module and set level to `logging.DEBUG`
 
+    In [2]: import logging
     In [3]: logging.basicConfig(level=logging.DEBUG)
 
+Get a config (etiher from environment variables)
+
     In [4]: config = Config.create()
+
+or passing parameter to `Config.create` method
+
+    In [4]: config = Config.create(url='server', login='user_login', password='user_password')
 
 You can safely display config in a console, your password will not appear.
 
@@ -53,6 +60,8 @@ But you can access to any key like a dict. For example:
 
     In [6]: config['url']
     Out[6]: 'https://server/jsp/webapi'
+
+So caution, your password is not in a safe place, as it's in memory.
 
 Config can be unpacked using `**` operator and use as parameter for `ADEWebAPI` constructor.
 
@@ -67,7 +76,7 @@ You can display methods of ADEWebAPI using "." and tab key
     myade.exception_factory       myade.getDate                 myade.logger                  myade.setProject
     myade.factory                 myade.getEvents               myade.login                   myade.url
 
-Docstring can be print using "?"
+Method signature, docstring, ... can be printed using "?"
 
     In [8]: ?myade.connect
     Signature: myade.connect()
@@ -75,7 +84,7 @@ Docstring can be print using "?"
     File:      ~/pyade/pyade/__init__.py
     Type:      instancemethod
 
-Let's connect to server (using url, login and password)
+Let's connect to server (using url, login and password saved in `myade` instance of `ADEWebAPI`)
 
     In [9]: myade.connect()
     DEBUG:ADEWebAPI:send {'function': 'connect', 'login': 'user_login', 'password': '*********', 'sessionId': '14cef8679e2'}
@@ -87,7 +96,7 @@ Let's connect to server (using url, login and password)
 
     Out[9]: True
 
-A list of dict describing projects can be given using: 
+A list of dict describing projects can be returned using: 
 
     In [10]: myade.getProjects()
     DEBUG:ADEWebAPI:send {'function': 'getProjects', 'sessionId': '14cef8679e2'}
@@ -102,7 +111,7 @@ A list of dict describing projects can be given using:
 
     Out[10]: [{'id': '6'}, {'id': '5'}]
 
-You can also use optional parameters such as `detail`, `myade.getProjects(detail=4)`
+You can also use optional parameters such as `detail` to get more details about each project.
 
     In [11]: myade.getProjects(detail=4)
     DEBUG:ADEWebAPI:send {'function': 'getProjects', 'sessionId': '14cef8679e2', 'detail': 4}
@@ -146,11 +155,10 @@ You can set `myade` instance of class `ADEWebAPI` in order methods output list o
     [Project({'id': '6'}),
      Project({'id': '5'})]
 
-Set current project
+You need to set current project. You probably won't be able to call most of methods without this.
 
     In [14]: myade.setProject(5)
     Out[14]: True
-
 
 ...
 
