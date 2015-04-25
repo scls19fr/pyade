@@ -1,6 +1,10 @@
 # pyade
 
-A minimal Python class to use ADE Web API
+A minimal Python class to use ADE Web API for ADE Planning from [Adesoft](http://www.adesoft.com/).
+
+This is an unofficial development. I am in no way related to this company. Use it at your own risk.
+
+WORK IN PROGRESS
 
 ## Usage
 
