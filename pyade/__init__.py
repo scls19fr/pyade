@@ -384,8 +384,7 @@ class ADEWebAPI():
 
     #def imageET(self, resources, weeks, days, **kwargs):
     def imageET(self, **kwargs):
-        """Returns image
-        ToDo"""
+        """Returns a GIF image (binary)"""
         if 'function' not in kwargs.keys():
             kwargs['function'] = 'imageET'
 
