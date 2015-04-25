@@ -25,6 +25,8 @@ import os
 import logging
 import traceback
 
+import datetime
+
 import requests
 from xml.etree import ElementTree as ET
 import time
@@ -56,6 +58,9 @@ def get_config(**default_values):
             d[key] = get_info(key)
     return(d)
 
+def timestamp2datetime(ts):
+    return(datetime.datetime.fromtimestamp(float(ts)/1000.0))
+
 class BaseObject(object):
     """Base object class which can be easily initialize using
     keyword parameters
@@ -63,6 +68,10 @@ class BaseObject(object):
     def __init__(self, **kwargs):
         for key, value in kwargs.items():
             self.__dict__[key] = value
+        self.init(**kwargs)
+
+    def init(self, **kwargs):
+        pass
 
     def __getitem__(self, key):
         return(self.__dict__[key])
@@ -71,7 +80,9 @@ class BaseObject(object):
         return("%s(%s)" % (self.__class__.__name__, repr(self.__dict__)))
 
 class Project(BaseObject):
-    pass
+    def init(self, **kwargs):
+        if 'uid' in kwargs.keys():
+            self.__dict__['uid'] = timestamp2datetime(float(self.__dict__['uid']))
 
 class Resource(BaseObject):
     """Base object for resource (Trainee, Room, Instructor...)"""
@@ -99,7 +110,9 @@ class Caracteristic(BaseObject):
     pass
 
 class Date(BaseObject):
-    pass
+    def init(self, **kwargs):
+        if 'time' in kwargs.keys():
+            self.__dict__['time'] = timestamp2datetime(float(self.__dict__['time']))
 
 class ObjectFactory(object):
     def create_object(self, typ, **kwargs):
