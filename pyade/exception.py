@@ -20,7 +20,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>
 """
 
-from xml.etree import ElementTree as ET
 
 class ExceptionFactory(object):
     def create_from_xml(self, xml_element):
