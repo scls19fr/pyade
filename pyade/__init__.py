@@ -36,7 +36,7 @@ def hide_string(s, char_replace='*'):
 
 ENV_VAR_ROOT = 'ADE_WEB_API'
 
-def get_info(key, default_value):
+def get_info(key, default_value=None):
     ENV_VAR_KEY = ENV_VAR_ROOT + "_" + key.upper()
     if default_value=='' or default_value is None:
         try:
@@ -46,6 +46,15 @@ def get_info(key, default_value):
             return(default_value)
     else:
         return(default_value)
+
+def get_config(**default_values):
+    d = {}
+    for key in ['url', 'login', 'password']:
+        if key in default_values.keys():
+            d[key] = get_info(key, default_values[key])
+        else:
+            d[key] = get_info(key)
+    return(d)
 
 class BaseObject(object):
     """Base object class which can be easily initialize using
