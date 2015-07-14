@@ -4,6 +4,7 @@
 [![License](https://img.shields.io/pypi/l/pyade.svg)](https://pypi.python.org/pypi/pyade/)
 [![Development Status](https://img.shields.io/pypi/status/pyade.svg)](https://pypi.python.org/pypi/pyade/)
 [![Downloads monthly](https://img.shields.io/pypi/dm/pyade.svg)](https://pypi.python.org/pypi/pyade/)
+[![Requirements Status](https://requires.io/github/scls19fr/pyade/requirements.svg?branch=master)](https://requires.io/github/scls19fr/pyade/requirements/?branch=master)
 [![Documentation Status](https://readthedocs.org/projects/pyade/badge/?version=latest)](http://pyade.readthedocs.org/en/latest/)
 [![Sourcegraph](https://sourcegraph.com/api/repos/github.com/scls19fr/pyade/.badges/status.png)](https://sourcegraph.com/github.com/scls19fr/pyade)
 [![Code Health](https://landscape.io/github/scls19fr/pyade/master/landscape.svg?style=flat)](https://landscape.io/github/scls19fr/pyade/master)
