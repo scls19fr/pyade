@@ -235,4 +235,6 @@ Out[15]: True
 
 ## Development
 
-    $ git clone https://github.com/scls19fr/pyade.git
+```bash
+$ git clone https://github.com/scls19fr/pyade.git
+```
