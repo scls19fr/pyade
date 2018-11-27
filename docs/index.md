@@ -8,7 +8,7 @@
 [![Documentation Status](https://readthedocs.org/projects/pyade/badge/?version=latest)](http://pyade.readthedocs.org/en/latest/)
 [![Sourcegraph](https://sourcegraph.com/api/repos/github.com/scls19fr/pyade/.badges/status.png)](https://sourcegraph.com/github.com/scls19fr/pyade)
 [![Code Health](https://landscape.io/github/scls19fr/pyade/master/landscape.svg?style=flat)](https://landscape.io/github/scls19fr/pyade/master)
-[![Build Status](https://travis-ci.org/scls19fr/pyade.svg)](https://travis-ci.org/scls19fr/pyade)
+[![Build Status](https://travis-ci.com/scls19fr/pyade.svg)](https://travis-ci.com/scls19fr/pyade)
 
 # pyade
 
