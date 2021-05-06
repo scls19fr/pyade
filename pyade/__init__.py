@@ -292,6 +292,21 @@ class ADEWebAPI():
 
         return(element)
 
+    def _send_crypted_request(self, data):
+        """Send a request"""
+        params = dict()
+        params['data'] = data
+
+        self.logger.debug("send %s" % hide_dict_values(params))
+        response = requests.get(self.url, params=params)
+        self.logger.debug(response)
+        self.logger.debug(response.text)
+        element = ET.fromstring(response.text)
+
+        self._parse_error(element)
+
+        return(element)
+
     def _parse_error(self, element):
         """Parses XML message and raises an Exception if
         this XML message is an error on server side""" 
@@ -306,6 +321,16 @@ class ADEWebAPI():
         returned_sessionId = element.attrib["id"]
         self.sessionId = returned_sessionId
         return(returned_sessionId is not None)
+
+    def connectCrypted(self, data):
+        """Connect to server with a crypted url"""
+        element = self._send_crypted_request(data)
+        try :
+            returned_sessionId = element.attrib["id"]
+            self.sessionId = returned_sessionId
+            return(returned_sessionId is not None)
+        except: # The crypted data was probably not a connect request
+            return false
 
     def disconnect(self):
         """Disconnect from server"""
