@@ -74,7 +74,8 @@ def get_info(key, default_value=None):
         try:
             return(os.environ[ENV_VAR_KEY])
         except:
-            logging.warning("You should pass %s using --%s or using environment variable %r" % (key, key, ENV_VAR_KEY))
+            #logging.warning("You should pass %s using --%s or using environment variable %r" % (key, key, ENV_VAR_KEY))
+            #user only provide crypted url, or login/password, the warning is no more appropriate
             return(default_value)
     else:
         return(default_value)
@@ -120,7 +121,7 @@ class Config(HiddenDict):
     @staticmethod
     def create(**default_values):
         d = Config()
-        for key in ['url', 'login', 'password']:
+        for key in ['url', 'login', 'password', 'cryptedLogin']:
             if key in default_values.keys():
                 d[key] = get_info(key, default_values[key])
             else:
@@ -222,10 +223,11 @@ class ObjectFactory(object):
 
 class ADEWebAPI():
     """Class to manage ADE Web API (reader only)"""
-    def __init__(self, url, login, password):
+    def __init__(self, url, login, password, cryptedLogin):
         self.url = url
         self.login = login
         self.password = password
+        self.cryptedLogin = cryptedLogin
         
         self.sessionId = None
         
@@ -315,21 +317,17 @@ class ADEWebAPI():
     def connect(self):
         """Connect to server"""
         function = 'connect'
-        element = self._send_request(function,
-            login=self.login, password=self.password)
-        returned_sessionId = element.attrib["id"]
-        self.sessionId = returned_sessionId
-        return(returned_sessionId is not None)
+        if(self.login!=None and self.password!=None):
+            element = self._send_request(function, login=self.login, password=self.password)
+        elif(self.cryptedLogin!=None):
+            element = self._send_crypted_request(self.cryptedLogin)
 
-    def connectCrypted(self, data):
-        """Connect to server with a crypted url"""
-        element = self._send_crypted_request(data)
-        try :
+        try:
             returned_sessionId = element.attrib["id"]
+        except:
+            returned_sessionId = None
             self.sessionId = returned_sessionId
             return(returned_sessionId is not None)
-        except: # The crypted data was probably not a connect request
-            return false
 
     def disconnect(self):
         """Disconnect from server"""
