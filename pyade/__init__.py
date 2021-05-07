@@ -115,8 +115,7 @@ class Config(HiddenDict):
     password is never displayed but is stored in this class"""
     def __init__(self, **kwargs):
         super(Config, self).__init__(hidden_keys=['password'], **kwargs)
-#        super(Config, self).__init__(hidden_keys=['password'],
-#            replace_keys={'url': 'server'}, **kwargs)
+        #super(Config, self).__init__(hidden_keys=['password'],replace_keys={'url': 'server'}, **kwargs)
 
     @staticmethod
     def create(**default_values):
@@ -244,7 +243,7 @@ class ADEWebAPI():
                     'type', 'email', 'url', 'size', 'quantity', 'code', 'address1', 
                     'address2', 'zipCode', 'state', 'city', 'country', 'telephone', 
                     'fax', 'timezone', 'jobCategory', 'manager', 'codeX', 'codeY', 
-                    'codeZ', 'info', 'detail']), 
+                    'codeZ', 'info', 'detail', 'fatherIds']), 
             'getActivities': set(['tree', 'id', 'name', 'resources', 'type', 'url', 
                     'capacity', 'duration', 'repetition', 'code', 'timezone', 'codeX', 
                     'codeY', 'codeZ', 'maxSeats', 'seatseLeft', 'info']), 
@@ -360,7 +359,7 @@ class ADEWebAPI():
     def getProjects(self, **kwargs):
         """Returns (list of) projects"""
         function = 'getProjects'
-#        element = self._send_request(function, detail=detail, id=id)
+        #element = self._send_request(function, detail=detail, id=id)
         element = self._send_request(function, **kwargs)
         lst_projects = element.findall('project')
         lst_projects = self._create_list_of('project', lst_projects)
@@ -437,7 +436,7 @@ class ADEWebAPI():
     def getDate(self, week, day, slot):
         """Returns date object from week, day, slot"""
         function = 'getDate'
-#        self._test_opt_params(kwargs, function)  # no keyword arguments (kwargs)
+        #self._test_opt_params(kwargs, function)  # no keyword arguments (kwargs)
         element = self._send_request(function, week=week, day=day, slot=slot)
         date = Date(**element.attrib)
         return(date)
@@ -450,7 +449,7 @@ class ADEWebAPI():
         if 'function' not in kwargs.keys():
             kwargs['function'] = function
 
-#        self._test_opt_params(kwargs, function)
+        #self._test_opt_params(kwargs, function)
 
         if 'sessionId' not in kwargs.keys():
             if self.sessionId is not None:
@@ -475,7 +474,7 @@ class ADEWebAPI():
 
     def week_id(self, date=datetime.date.today()):
         """Returns week number for a given date"""
-#        week = ((date1-date0)/7).days
+        #week = ((date1-date0)/7).days
 
         if self._first_date is None:
             self._first_date = self.first_date()
