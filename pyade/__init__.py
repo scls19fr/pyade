@@ -247,7 +247,7 @@ class ADEWebAPI():
                     'codeZ', 'info', 'detail']), 
             'getActivities': set(['tree', 'id', 'name', 'resources', 'type', 'url', 
                     'capacity', 'duration', 'repetition', 'code', 'timezone', 'codeX', 
-                    'codeY', 'codeZ', 'maxSeats', 'seatseLeft', 'info']), 
+                    'codeY', 'codeZ', 'maxSeats', 'seatseLeft', 'info', 'detail']), 
             'getEvents': set(['eventId', 'activities', 'name', 'resources', 
                     'weeks', 'days', 'date', 'detail']), 
             'getCosts': set(['id', 'name']), 
