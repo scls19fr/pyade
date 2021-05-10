@@ -342,7 +342,7 @@ class ADEWebAPI():
         opt_params = self.opt_params[function]
         given_params = set(given_params.keys())
         msg = "One (or many) parameters of '%s' call are not allowed. %s is not in %s" \
-            % ('getResources', given_params-opt_params, opt_params)
+            % (function, given_params-opt_params, opt_params)
         assert given_params <= opt_params, msg
 
     def _create_list_of_dicts(self, category, lst):
