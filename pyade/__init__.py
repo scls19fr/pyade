@@ -74,7 +74,8 @@ def get_info(key, default_value=None):
         try:
             return(os.environ[ENV_VAR_KEY])
         except:
-            logging.warning("You should pass %s using --%s or using environment variable %r" % (key, key, ENV_VAR_KEY))
+            #logging.warning("You should pass %s using --%s or using environment variable %r" % (key, key, ENV_VAR_KEY))
+            #user only provide crypted url, or login/password, the warning is no more appropriate
             return(default_value)
     else:
         return(default_value)
@@ -115,13 +116,12 @@ class Config(HiddenDict):
     password is never displayed but is stored in this class"""
     def __init__(self, **kwargs):
         super(Config, self).__init__(hidden_keys=['password'], **kwargs)
-#        super(Config, self).__init__(hidden_keys=['password'],
-#            replace_keys={'url': 'server'}, **kwargs)
+        #super(Config, self).__init__(hidden_keys=['password'],replace_keys={'url': 'server'}, **kwargs)
 
     @staticmethod
     def create(**default_values):
         d = Config()
-        for key in ['url', 'login', 'password']:
+        for key in ['url', 'login', 'password', 'cryptedLogin']:
             if key in default_values.keys():
                 d[key] = get_info(key, default_values[key])
             else:
@@ -223,10 +223,11 @@ class ObjectFactory(object):
 
 class ADEWebAPI():
     """Class to manage ADE Web API (reader only)"""
-    def __init__(self, url, login, password):
+    def __init__(self, url, login, password, cryptedLogin):
         self.url = url
         self.login = login
         self.password = password
+        self.cryptedLogin = cryptedLogin
         
         self.sessionId = None
         
@@ -244,7 +245,7 @@ class ADEWebAPI():
                     'type', 'email', 'url', 'size', 'quantity', 'code', 'address1', 
                     'address2', 'zipCode', 'state', 'city', 'country', 'telephone', 
                     'fax', 'timezone', 'jobCategory', 'manager', 'codeX', 'codeY', 
-                    'codeZ', 'info', 'detail']), 
+                    'codeZ', 'info', 'detail', 'fatherIds']), 
             'getActivities': set(['tree', 'id', 'name', 'resources', 'type', 'url', 
                     'capacity', 'duration', 'repetition', 'code', 'timezone', 'codeX', 
                     'codeY', 'codeZ', 'maxSeats', 'seatseLeft', 'info', 'detail']), 
@@ -292,6 +293,21 @@ class ADEWebAPI():
 
         return(element)
 
+    def _send_crypted_request(self, data):
+        """Send a request"""
+        params = dict()
+        params['data'] = data
+
+        self.logger.debug("send %s" % hide_dict_values(params))
+        response = requests.get(self.url, params=params)
+        self.logger.debug(response)
+        self.logger.debug(response.text)
+        element = ET.fromstring(response.text)
+
+        self._parse_error(element)
+
+        return(element)
+
     def _parse_error(self, element):
         """Parses XML message and raises an Exception if
         this XML message is an error on server side""" 
@@ -301,9 +317,15 @@ class ADEWebAPI():
     def connect(self):
         """Connect to server"""
         function = 'connect'
-        element = self._send_request(function,
-            login=self.login, password=self.password)
-        returned_sessionId = element.attrib["id"]
+        if(self.login!=None and self.password!=None):
+            element = self._send_request(function, login=self.login, password=self.password)
+        elif(self.cryptedLogin!=None):
+            element = self._send_crypted_request(self.cryptedLogin)
+        
+        try:
+            returned_sessionId = element.attrib["id"]
+        except:
+            returned_sessionId = None
         self.sessionId = returned_sessionId
         return(returned_sessionId is not None)
 
@@ -320,7 +342,7 @@ class ADEWebAPI():
         opt_params = self.opt_params[function]
         given_params = set(given_params.keys())
         msg = "One (or many) parameters of '%s' call are not allowed. %s is not in %s" \
-            % ('getResources', given_params-opt_params, opt_params)
+            % (function, given_params-opt_params, opt_params)
         assert given_params <= opt_params, msg
 
     def _create_list_of_dicts(self, category, lst):
@@ -335,7 +357,7 @@ class ADEWebAPI():
     def getProjects(self, **kwargs):
         """Returns (list of) projects"""
         function = 'getProjects'
-#        element = self._send_request(function, detail=detail, id=id)
+        #element = self._send_request(function, detail=detail, id=id)
         element = self._send_request(function, **kwargs)
         lst_projects = element.findall('project')
         lst_projects = self._create_list_of('project', lst_projects)
@@ -412,7 +434,7 @@ class ADEWebAPI():
     def getDate(self, week, day, slot):
         """Returns date object from week, day, slot"""
         function = 'getDate'
-#        self._test_opt_params(kwargs, function)  # no keyword arguments (kwargs)
+        #self._test_opt_params(kwargs, function)  # no keyword arguments (kwargs)
         element = self._send_request(function, week=week, day=day, slot=slot)
         date = Date(**element.attrib)
         return(date)
@@ -425,7 +447,7 @@ class ADEWebAPI():
         if 'function' not in kwargs.keys():
             kwargs['function'] = function
 
-#        self._test_opt_params(kwargs, function)
+        #self._test_opt_params(kwargs, function)
 
         if 'sessionId' not in kwargs.keys():
             if self.sessionId is not None:
@@ -450,7 +472,7 @@ class ADEWebAPI():
 
     def week_id(self, date=datetime.date.today()):
         """Returns week number for a given date"""
-#        week = ((date1-date0)/7).days
+        #week = ((date1-date0)/7).days
 
         if self._first_date is None:
             self._first_date = self.first_date()
