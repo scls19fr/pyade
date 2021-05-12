@@ -321,13 +321,13 @@ class ADEWebAPI():
             element = self._send_request(function, login=self.login, password=self.password)
         elif(self.cryptedLogin!=None):
             element = self._send_crypted_request(self.cryptedLogin)
-
+        
         try:
             returned_sessionId = element.attrib["id"]
         except:
             returned_sessionId = None
-            self.sessionId = returned_sessionId
-            return(returned_sessionId is not None)
+        self.sessionId = returned_sessionId
+        return(returned_sessionId is not None)
 
     def disconnect(self):
         """Disconnect from server"""
